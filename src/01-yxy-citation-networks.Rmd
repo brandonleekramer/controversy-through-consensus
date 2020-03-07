@@ -1,0 +1,123 @@
+---
+title: "Year-by-Year Citation Networks"
+author: "Brandon L. Kramer"
+date: "3/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(root.dir = "C:/Users/bkram/CloudStation/Biomedical MultipliciTs/controversy-through-consensus/data")
+for (pkg in c("tidyverse", "igraph", "stringr", "reshape2",
+              "tidytext", "ggplot2", "bibliometrix")) {library(pkg, character.only = TRUE)}
+```
+
+```{r import_raw_data}
+setwd("C:/Users/bkram/CloudStation/Biomedical MultipliciTs/controversy-through-consensus/data")
+files <- dir(pattern = "*.txt")
+files <- readFiles(files)
+raw_data <- convert2df(files, dbsource = "isi", format = "plaintext"); rm(files)
+citation_data <- raw_data %>% 
+  select(AU, PY, CR) 
+```
+
+
+```{r}
+yrCoc <- function(x, y){
+  cocMatrix(x %>% filter(PY == y), 
+            Field = "CR", sep = ".  ")
+}
+
+network1980 <- yrCoc(citation_data, 1980)
+network1981 <- yrCoc(citation_data, 1981)
+network1982 <- yrCoc(citation_data, 1982)
+network1983 <- yrCoc(citation_data, 1983)
+network1984 <- yrCoc(citation_data, 1984)
+network1985 <- yrCoc(citation_data, 1985)
+network1986 <- yrCoc(citation_data, 1986)
+network1987 <- yrCoc(citation_data, 1987)
+network1988 <- yrCoc(citation_data, 1988)
+network1989 <- yrCoc(citation_data, 1989)
+network1990 <- yrCoc(citation_data, 1990)
+network1991 <- yrCoc(citation_data, 1991)
+network1992 <- yrCoc(citation_data, 1992)
+network1993 <- yrCoc(citation_data, 1993)
+network1994 <- yrCoc(citation_data, 1994)
+network1995 <- yrCoc(citation_data, 1995)
+network1996 <- yrCoc(citation_data, 1996)
+network1997 <- yrCoc(citation_data, 1997)
+network1998 <- yrCoc(citation_data, 1998)
+network1999 <- yrCoc(citation_data, 1999)
+network2000 <- yrCoc(citation_data, 2000)
+network2001 <- yrCoc(citation_data, 2001)
+network2002 <- yrCoc(citation_data, 2002)
+network2003 <- yrCoc(citation_data, 2003)
+network2004 <- yrCoc(citation_data, 2004)
+network2005 <- yrCoc(citation_data, 2005)
+network2006 <- yrCoc(citation_data, 2006)
+network2007 <- yrCoc(citation_data, 2007)
+network2008 <- yrCoc(citation_data, 2008)
+network2009 <- yrCoc(citation_data, 2009)
+network2010 <- yrCoc(citation_data, 2010)
+network2011 <- yrCoc(citation_data, 2011)
+network2012 <- yrCoc(citation_data, 2012)
+network2013 <- yrCoc(citation_data, 2013)
+network2014 <- yrCoc(citation_data, 2014)
+network2015 <- yrCoc(citation_data, 2015)
+network2016 <- yrCoc(citation_data, 2016)
+network2017 <- yrCoc(citation_data, 2017)
+
+```
+
+```{r}
+getMedCiteYr <- function(x){
+  yearly_citations <- as.data.frame(x@Dimnames[2])
+  names(yearly_citations) <- "citations"
+  yearly_citations$citations <- as.character(yearly_citations$citations)
+  median(as.numeric(unlist(str_extract_all(yearly_citations$citations,"[[:digit:]]{4}"))))
+}
+
+year <- as.numeric(c(1980:2017))
+medCiteYear <- c(
+  getMedCiteYr(network1980),
+  getMedCiteYr(network1981),
+  getMedCiteYr(network1982),
+  getMedCiteYr(network1983),
+  getMedCiteYr(network1984),
+  getMedCiteYr(network1985),
+  getMedCiteYr(network1986),
+  getMedCiteYr(network1987),
+  getMedCiteYr(network1988),
+  getMedCiteYr(network1989),
+  getMedCiteYr(network1990),
+  getMedCiteYr(network1991),
+  getMedCiteYr(network1992),
+  getMedCiteYr(network1993),
+  getMedCiteYr(network1994),
+  getMedCiteYr(network1995),
+  getMedCiteYr(network1996),
+  getMedCiteYr(network1997),
+  getMedCiteYr(network1998),
+  getMedCiteYr(network1999),
+  getMedCiteYr(network2000),
+  getMedCiteYr(network2001),
+  getMedCiteYr(network2002),
+  getMedCiteYr(network2003),
+  getMedCiteYr(network2004),
+  getMedCiteYr(network2005),
+  getMedCiteYr(network2006),
+  getMedCiteYr(network2007),
+  getMedCiteYr(network2008),
+  getMedCiteYr(network2009),
+  getMedCiteYr(network2010),
+  getMedCiteYr(network2011),
+  getMedCiteYr(network2012),
+  getMedCiteYr(network2013),
+  getMedCiteYr(network2014),
+  getMedCiteYr(network2015),
+  getMedCiteYr(network2016),
+  getMedCiteYr(network2017)
+)
+
+
+```
